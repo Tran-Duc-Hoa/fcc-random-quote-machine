@@ -23,12 +23,16 @@ function App({ classes }) {
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState(null);
   const [hex, setHex] = useState("#1E90FF");
 
-  useEffect(async () => {
-    const data = await fetch('https://gist.githubusercontent.com/natebass/b0a548425a73bdf8ea5c618149fe1fce/raw/f4231cd5961f026264bb6bb3a6c41671b044f1f4/quotes.json');
-    const quotes = await data.json();
-    setQuotes(quotes);
-    setSelectedQuoteIndex(random(0, quotes.length - 1));
-  }, []);
+  useEffect(() => {
+    async function fetchData() {
+      // You can await here
+      const data = await fetch('https://gist.githubusercontent.com/natebass/b0a548425a73bdf8ea5c618149fe1fce/raw/f4231cd5961f026264bb6bb3a6c41671b044f1f4/quotes.json');
+      const quotes = await data.json();
+      setQuotes(quotes);
+      setSelectedQuoteIndex(random(0, quotes.length - 1));
+    }
+    fetchData();
+  }, []); // Or [] if effect doesn't need props or state
 
 
   function getSelectedQuote() {
