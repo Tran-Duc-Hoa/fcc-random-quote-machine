@@ -4,18 +4,25 @@ import 'typeface-roboto';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import QuoteMachine from './components/QuoteMachine';
+import { randomColor } from 'randomcolor';
+
+
 
 const styles = {
   container: {
     alignItems: 'center',
     display: 'flex',
     height: '100vh',
+    
   }
 };
+
+
 
 function App({ classes }) {
   const [quotes, setQuotes] = useState([]);
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState(null);
+  const [hex, setHex] = useState("#1E90FF");
 
   useEffect(async () => {
     const data = await fetch('https://gist.githubusercontent.com/natebass/b0a548425a73bdf8ea5c618149fe1fce/raw/f4231cd5961f026264bb6bb3a6c41671b044f1f4/quotes.json');
@@ -23,6 +30,7 @@ function App({ classes }) {
     setQuotes(quotes);
     setSelectedQuoteIndex(random(0, quotes.length - 1));
   }, []);
+
 
   function getSelectedQuote() {
     if (!quotes.length || !Number.isInteger(selectedQuoteIndex)) {
@@ -42,16 +50,22 @@ function App({ classes }) {
     return random(0, quotes.length - 1);
   }
 
+  const randomizedHex = () => {
+    var randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    setHex(randomColor);
+  }
+
   function assignNewQuoteIndex() {
     setSelectedQuoteIndex(generateNewQuoteIndex());
+    randomizedHex();
   }
 
   return (
-    <Grid className={classes.container} id="quote-box" justify="center" container>
-      <Grid xs={11} lg={8} item>
+    <Grid className={classes.container} id="quote-box" justify="center" container style={{backgroundColor: `${hex}`}}> 
+      <Grid xs={11} lg={5} item>
         {
           getSelectedQuote() ?
-          <QuoteMachine selectedQuote={getSelectedQuote()} assignNewQuoteIndex={assignNewQuoteIndex} /> :
+          <QuoteMachine color={hex} selectedQuote={getSelectedQuote()} assignNewQuoteIndex={assignNewQuoteIndex} /> :
           null
         }
       </Grid>
