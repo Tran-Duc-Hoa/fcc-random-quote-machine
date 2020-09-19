@@ -32,8 +32,8 @@ function App({ classes }) {
   }
 
   /**
-   * Returns an integer representing an index in state.quotes
-   * If state.quotes is empty, returns undefined
+   * Returns an integer representing an index in quotes
+   * If quotes is empty, returns undefined
    */
   function generateNewQuoteIndex() {
     if (!quotes.length) {
